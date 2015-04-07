@@ -28,7 +28,9 @@ namespace BookService.Controllers
                     AuthorName = b.Author.Name
                 };
 
-            return db.Books;
+            return db.Books
+                // new code:
+        .Include(b => b.Author);
         }
 
         // GET: api/Books/5
