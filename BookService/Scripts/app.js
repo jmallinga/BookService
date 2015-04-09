@@ -22,10 +22,18 @@
         ajaxHelper(booksUri, 'GET').done(function (data) {
             self.books(data);
         });
-    }
 
-    // Fetch the initial data.
-    getAllBooks();
-};
+        self.detail = ko.observable();
 
-ko.applyBindings(new ViewModel());
+        self.getBookDetail = function (item) {
+            ajaxHelper(booksUri + item.Id, 'GET').done(function (data) {
+                self.detail(data);
+            });
+        }
+
+        // Fetch the initial data.
+        getAllBooks();
+    };
+
+    ko.applyBindings(new ViewModel());
+}
