@@ -34,8 +34,8 @@ namespace BookService.Controllers
         //.Include(b => b.Author);
         }
 
-        // GET: api/Books/5
-        [ResponseType(typeof(BookDetailDTO))]
+       // GET: api/Books/5
+       [ResponseType(typeof(BookDetailDTO))]
         public async Task<IHttpActionResult> GetBook(int id)
         {
             var book = await db.Books.Include(b => b.Author).Select(b =>
