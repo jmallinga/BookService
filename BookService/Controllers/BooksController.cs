@@ -20,15 +20,15 @@ namespace BookService.Controllers
         // GET: api/Books
         public IQueryable<BookDTO> GetBooks()
         {
-    var books = from b in db.Books
-                select new BookDTO()
-                {
-                    Id = b.Id,
-                    Title = b.Title,
-                    AuthorName = b.Author.Name
-                };
+            var books = from b in db.Books
+                        select new BookDTO()
+                        {
+                            Id = b.Id,
+                            Title = b.Title,
+                            AuthorName = b.Author.Name
+                        };
 
-    return books;
+            return books;
         //    return db.Books
         //        // new code:
         //.Include(b => b.Author);
@@ -93,29 +93,27 @@ namespace BookService.Controllers
 
         // POST: api/Books
         [ResponseType(typeof(Book))]
-public async Task<IHttpActionResult> PostBook(Book book)
-{
-    if (!ModelState.IsValid)
-    {
-        return BadRequest(ModelState);
-    }
+        public async Task<IHttpActionResult> PostBook(Book book)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-    db.Books.Add(book);
-    await db.SaveChangesAsync();
+            db.Books.Add(book);
+            await db.SaveChangesAsync();
+   
+            // Load author name
+            db.Entry(book).Reference(x => x.Author).Load();
 
-    // New code:
-    // Load author name
-    db.Entry(book).Reference(x => x.Author).Load();
+            var dto = new BookDTO()
+            {
+                Id = book.Id,
+                Title = book.Title,
+                AuthorName = book.Author.Name
+            };
 
-    var dto = new BookDTO()
-    {
-        Id = book.Id,
-        Title = book.Title,
-        AuthorName = book.Author.Name
-    };
-
-    return CreatedAtRoute("DefaultApi", new { id = book.Id }, dto);
-
+            return CreatedAtRoute("DefaultApi", new { id = book.Id }, dto);
         }
 
         // DELETE: api/Books/5
