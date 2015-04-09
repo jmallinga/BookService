@@ -16,7 +16,6 @@
         }).fail(function (jqXHR, textStatus, errorThrown) {
             self.error(errorThrown);
         });
-
     }
 
     function getAllBooks() {
